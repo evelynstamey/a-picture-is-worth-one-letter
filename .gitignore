@@ -1,0 +1,14 @@
+.idea
+.ipynb_checkpoints
+.DS_Store
+
+venv
+
+*letters_speaking.egg-info
+*ipynb
+*build
+*__pycache__/
+*.pytest_cache/
+*build
+
+letters__*
