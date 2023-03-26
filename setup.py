@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "main = letters_speaking.main:main",
+            "draw_letters = letters_speaking.main:main",
         ]
     },
 )

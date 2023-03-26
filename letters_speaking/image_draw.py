@@ -5,9 +5,8 @@ import os
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-import string
 
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.INFO)
 _log = logging.getLogger(__name__)
 
 
@@ -73,7 +72,6 @@ def custom_draw(img, method, fg_color, **kwargs):
 
     elif method == "points":
         _log.info("Drawing using 'points' method")
-        width, height = img.size
         for coordinate in kwargs["coordinates"]:
             img.putpixel((coordinate[1], coordinate[0]), fg_color)
 
@@ -86,7 +84,7 @@ def custom_draw(img, method, fg_color, **kwargs):
 def create_bw_image(
     image_dims=None, bg_color=None, draw_method=None, img=None, **draw_kwargs
 ):
-    """
+    """# noqa
     Convert an input image to black-and-white, or generate an arbitrary image
     and convert to black-and-white.
 
@@ -95,14 +93,13 @@ def create_bw_image(
     * https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes
     * https://pillow.readthedocs.io/en/stable/reference/Image.html#PIL.Image.Image.point
     * https://stackoverflow.com/questions/9506841/using-pil-to-turn-a-rgb-image-into-a-pure-black-and-white-image
-
     """
     if not img:
         _log.info("Creating new image")
         img = Image.new(mode="RGB", size=image_dims, color=bg_color)
         img = custom_draw(img, draw_method, **draw_kwargs)
 
-    _log.info("Converting image to black-and-white")
+    _log.debug("Converting image to black-and-white")
     # "L": 8-bit pixels, black and white
     img = img.convert(mode="L")
 
@@ -207,17 +204,26 @@ def draw_text_image(
         fill=font_color,
     )
 
-    file_dir = file_dir if file_dir else str(datetime.now())
-    file_name = message
-    for punctuation in string.punctuation:
-        file_dir = file_dir.replace(punctuation, "_")
-        file_name = file_name.replace(punctuation, "_")
-
+    file_dir = file_dir if file_dir else datetime.now().strftime("%Y%m%d_%H%M%S")
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
 
-    file_name = f"{file_name}.png"
+    file_name = f"{message}.png"
     file_path = os.path.join(file_dir, file_name)
     centered_img.save(file_path, "PNG")
 
-    return uncentered_img, centered_img
+    metadata = {
+        "canvas_left": canvas_left,
+        "canvas_top": canvas_top,
+        "canvas_right": canvas_right,
+        "canvas_bottom": canvas_bottom,
+        "bg_color": bg_color,
+        "message": message,
+        "font_path": font_path,
+        "font_size": font_size,
+        "font_color": font_color,
+        "file_dir": file_dir,
+        "file_name": file_name,
+    }
+
+    return uncentered_img, centered_img, metadata
