@@ -19,7 +19,6 @@ FONTS_DIR = f"{dirname(dirname(dirname(abspath(__file__))))}/Library/Fonts"
 FONT_FILE = "Comic Sans MS.ttf"
 CANVAS_SIZE = 120
 
-
 def _get_color(color=None, style=None, ground=None):
     if color:
         return color

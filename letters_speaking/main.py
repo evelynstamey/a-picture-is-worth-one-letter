@@ -14,7 +14,6 @@ def main():
     parser.add_argument("--bg_style")
     parser.add_argument("--fg_style")
     parser.add_argument("--display_image", action="store_true")
-
     args = parser.parse_args()
     draw_letters(
         canvas_size=args.canvas_size,
