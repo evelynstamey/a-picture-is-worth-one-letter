@@ -1,0 +1,8 @@
+[flake8]
+filename = ./letters_speaking/*.py
+max-line-length = 88
+exclude =
+    .pytest_cache
+    __pycache__
+show-source = True
+statistics = True
